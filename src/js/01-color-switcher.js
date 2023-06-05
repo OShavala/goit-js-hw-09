@@ -24,5 +24,8 @@ function stopColorChanging() {
   stopButton.disabled = true;
 }
 
-startButton.onclick = startColorChanging;
-stopButton.onclick = stopColorChanging;
+
+startButton.addEventListener('click', startColorChanging);
+stopButton.addEventListener('click', stopColorChanging);
+
+

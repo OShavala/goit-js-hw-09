@@ -1,8 +1,7 @@
 const form = document.querySelector('.form');
-const delay = document.querySelector('input[name="delay"]');
-const step = document.querySelector('input[name="step"]');
-const amount = document.querySelector('input[name="amount"]');
-const btnCreatePromise = document.querySelector('button[type="submit"]');
+
+form.addEventListener('click', onPromiseCreate);
+
 
 function createPromise(position, delay) {
   const promise = new Promise((resolve, reject) => {
@@ -18,18 +17,28 @@ function createPromise(position, delay) {
   return promise;
 }
 
-btnCreatePromise.addEventListener('click', e => {
+function onPromiseCreate(e) {
   e.preventDefault();
-  let firstDelay = Number(delay.value);
-  let delayStep = Number(step.value);
-  for (let i = 0; i < amount.value; i++) {
-    createPromise(i + 1, firstDelay + i * delayStep)
+  const { delay, step, amount } = e.currentTarget.elements;
+  let inputDelay = Number(delay.value);
+  let inputStep = Number(step.value);
+  let inputAmount = Number(amount.value);
+
+  for (let i = 1; i <= inputAmount; i += 1) {
+    inputDelay += inputStep;
+
+    createPromise(i, inputDelay)
       .then(({ position, delay }) => {
-        console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        console.log(
+          `✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
-        console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        console.log(
+          `❌ Rejected promise ${position} in ${delay}ms`);
       });
+    e.currentTarget.reset();
   }
-  form.reset();
-});
+}
+
+
+
